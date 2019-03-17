@@ -1,0 +1,23 @@
+<view class='index_top'>
+  <view class='navtop'> 
+    <input type='text' placeholder='请输入节气名称:中文/字母' bindinput='binginput' bindblur='inputblur'></input>
+    <text bindtap='searching'>搜索</text>
+  </view>
+   <!-- 这是ul li 下拉列表 -->
+  <view class="hideul" style="display:{{blocks}};">
+      <view bindtap='listto'>{{season}}</view>
+   </view>
+</view>
+
+<view class='index_main'>
+  <view class="top">节气·热门搜索</view>
+    <view class="main">
+        <ul>
+              <li wx:for='{{allName}}' wx:key='{{item.ChineseName}}' bindtap='lichun' data-menuItem='{{item.EventData}}'>{{item.ChineseName}}</li>
+         </ul>
+    </view>
+</view>
+
+<view class='footer_tu'>
+  <text>24节气·精品</text>
+</view>
