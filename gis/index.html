@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,shrink-to-fit=no"/>
+    <title>地图应用</title>
+</head>
+<body>
+   
+    
+    <style>
+        #container {
+            margin: 0 auto;
+            width:80%; 
+            height: 600px;
+             }  
+        #mysubway {
+            margin: 600 auto 0;
+            width:80%; 
+            height: 600px;
+        }  
+    </style>
+    <div id="container"></div>
+    <div id="mysubway"></div>  
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=5acc70a3366d8803b441c9ff347f5807"></script> 
+    <script type="text/javascript" src="https://webapi.amap.com/subway?v=1.0&key=5acc70a3366d8803b441c9ff347f5807&amp;callback=cbk "></script>
+    <script type="text/javascript">
+        var map = new AMap.Map('container', {
+            zoom:15,//级别
+            center: [116.397428, 39.90923],//中心点坐标
+            layers: [//使用多个图层
+              new AMap.TileLayer.Satellite(),
+              new AMap.TileLayer.RoadNet()
+            ],
+            viewMode:'3D'//使用3D视图
+        });
+        //实时路况图层
+    var trafficLayer = new AMap.TileLayer.Traffic({
+        zIndex: 10
+    });
+    AMap.plugin(['AMap.ToolBar','AMap.Driving','AMap.LineSearch'],function(){//异步同时加载多个插件
+      var toolbar = new AMap.ToolBar();
+      map.addControl(toolbar);
+      var driving = new AMap.Driving();//驾车路线规划
+      driving.search(/*参数*/)
+      var station = new AMap.StationSearch({
+         pageIndex: 1, //页码，默认值为1
+         pageSize: 10, //单页显示结果条数，默认值为20，最大值为50
+        city: '010' //限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
+       });
+
+    //执行关键字查询
+     station.search('东直门', function(status, result) {
+       //打印状态信息status和结果信息result
+      //status：complete 表示查询成功，no_data 为查询无结果，error 代表查询错误。
+      console.log(status, result);
+    });
+  });
+
+  AMap.plugin(["AMap.LineSearch"], function() {
+    //实例化公交线路查询类
+    var linesearch = new AMap.LineSearch({
+        pageIndex: 1, //页码，默认值为1
+        pageSize: 1, //单页显示结果条数，默认值为20，最大值为50
+        city: "北京", //限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
+        extensions: "all" //是否返回公交线路详细信息，默认值为『base』
+    });
+
+    //执行公交路线关键字查询
+    linesearch.search('536', function(status, result) {
+        //打印状态信息status和结果信息result
+        console.log(status, result);
+    });
+});
+
+window.cbk = function(){
+        var mysubway = subway("mysubway", {
+            easy: 1
+        });
+    };
+    </script>
+</body>
+</html>
