@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jq.js"></script>
+   
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td ,th{
+            margin: 0;
+            padding: 0;
+            border: 1px solid #000;
+           
+        }
+        tr th , tr td {
+            width: 400px;
+            height: 10px;
+            text-align: center;
+        }
+        tr th:first-child,tr td:first-child {
+            width: 50px;
+            height: 10px;
+            text-align: center;
+        }
+       
+        tr:nth-child(2n+1) td {
+            background-color: cornflowerblue;
+        }
+        tr:hover td {
+            background-color: chocolate;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <table >
+            <thead>
+              <tr>
+                  <th></th>
+                <th>一级标签</th>
+                <th>二级标签</th>
+                <th>指标内容</th>
+                <th>指标目标值</th>
+                <th>历史指标值</th>
+                <th>历史完成值</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>一级标签</td>
+                    <td>二级标签</td>
+                    <td>指标内容</td>
+                    <td>指标目标值</td>
+                    <td>历史指标值</td>
+                    <td>历史完成值</td>
+                </tr>
+               
+              </tbody>
+         >
+          
+            
+          </table>
+    </div>
+    <script>
+      
+      
+              
+$.ajax( {
+    url :"http://localhost:3000",
+    type :"GET",
+    dataType:"jsonp",/*加上datatype*/
+    jsonpCallback:"cb",/*设置一个回调函数，名字随便取，和下面的函数里的名字相同就行*/
+    contentType:"application/x-www-form-urlencoded ,application/json",
+    success: (res) => {
+     console.log(res)
+     var docFag = document.createDocumentFragment();
+     res.list.forEach( (item,index,arr) => {
+         var tr  = document.createElement("tr");
+         var props = Object.keys(item);
+         props.forEach( (item1,index1) => {   
+            var td  = document.createElement("td");   
+              td.textContent = item[item1];
+               tr.appendChild( td )
+         } )    
+        docFag.appendChild(tr);
+
+     } )
+     $("tbody").append(docFag)
+    }
+})
+    </script>
+</body>
+</html>
